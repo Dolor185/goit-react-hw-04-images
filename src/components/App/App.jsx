@@ -10,7 +10,7 @@ import { Modal } from 'components/Modal/Modal';
 import { Container } from './App.styled';
 
 export const App = () => {
-  const [status, setStatus] = useState('idle');
+  const [showLoader, setShowLoader] = useState(false);
   const [inquiry, setInquiry] = useState('');
   const [page, setPage] = useState(1);
   const [images, setImages] = useState([]);
@@ -21,18 +21,14 @@ export const App = () => {
     if (inquiry === '') {
       return;
     }
-    console.log('initial');
-    setStatus('pending');
+    setShowLoader(true);
     const response = getImages(inquiry, page);
     response.then(res => {
       if (res.data.hits.length === 0) {
         toast.error('Nothing was found');
       }
-      setImages([...images, ...res.data.hits]);
-      setStatus('resolved');
-      setTimeout(() => {
-        window.scrollTo(0, 10000);
-      }, 0);
+      setImages(prevState => [...prevState, ...res.data.hits]);
+      setShowLoader(false);
     });
   }, [inquiry, page]);
 
@@ -59,12 +55,14 @@ export const App = () => {
   return (
     <div>
       <Searchbar onSubmit={formSubmit} />
-      {status === 'pending' && <Loader />}
-      {status === 'resolved' && (
+      {showLoader && <Loader />}
+      {images.length ? (
         <Container>
           <ImageGallery images={images} handleModal={handleModal} />
           {images.length !== 0 && <LoadMore onLoadMore={onLoadMore} />}
         </Container>
+      ) : (
+        <></>
       )}
       {showModal && <Modal onClose={toggleModal} modalImg={modalImg} />}
       <ToastContainer autoClose={3000} />
