@@ -4,15 +4,16 @@ import { BackDrop, Box } from './Modal.styled';
 
 export const Modal = ({ onClose, modalImg }) => {
   useEffect(() => {
+    const handleClose = e => {
+      e.code === 'Escape' && onClose();
+    };
+
     window.addEventListener('keydown', handleClose);
+
     return () => {
       window.removeEventListener('keydown', handleClose);
     };
-  }, []);
-
-  const handleClose = e => {
-    e.code === 'Escape' && onClose();
-  };
+  }, [onClose]);
 
   const onBackdropClick = e => {
     e.target === e.currentTarget && onClose();
