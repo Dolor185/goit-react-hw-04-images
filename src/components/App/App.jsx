@@ -3,7 +3,7 @@ import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ImageGallery } from '../ImageGallery/ImageGallery';
-import getImages from 'components/API/Api';
+import getImages from 'API/Api';
 import { LoadMore } from '../LoadMore/LoadMore';
 import { Loader } from 'components/Loader/Loader';
 import { Modal } from 'components/Modal/Modal';
